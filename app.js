@@ -11,18 +11,19 @@ const bodyParser = require("body-parser");
 const port = process.env.PORT || 3000;
 
 // Configure AWS SDK
-AWS.config.update({
-  region: process.env.AWS_REGION,
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-});
+if ((port = 3000)) {
+  AWS.config.update({
+    region: process.env.AWS_REGION,
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  });
+}
 
 // Create an instance of the DynamoDB DocumentClient
 const docClient = new AWS.DynamoDB.DocumentClient();
 const tableName = process.env.DYNAMODB_TABLE_NAME;
 
-app.use(bodyParser.json()); 
-
+app.use(bodyParser.json());
 
 app.post("/", (req, res) => {
   const itemId = uuidv4();
@@ -98,7 +99,6 @@ app.get("/:id", (req, res) => {
     }
   });
 });
-
 
 app.put("/:id", (req, res) => {
   const params = {

@@ -41,21 +41,23 @@ app.post("/", (req, res) => {
   });
 });
 
-app.get("/", (req, res) => {
-  const params = {
-    TableName: tableName,
-  };
+app.get('/', (req, res)=>res.send('test 123'))
 
-  docClient.scan(params, (err, data) => {
-    if (err) {
-      console.error("Error retrieving items:", err);
-      res.status(500).send("Error retrieving items");
-    } else {
-      console.log("Items retrieved successfully:", data.Items);
-      res.status(200).send(data.Items);
-    }
-  });
-});
+// app.get("/", (req, res) => {
+//   const params = {
+//     TableName: tableName,
+//   };
+
+//   docClient.scan(params, (err, data) => {
+//     if (err) {
+//       console.error("Error retrieving items:", err);
+//       res.status(500).send("Error retrieving items");
+//     } else {
+//       console.log("Items retrieved successfully:", data.Items);
+//       res.status(200).send(data.Items);
+//     }
+//   });
+// });
 
 app.get("/:id", (req, res) => {
   const params = {

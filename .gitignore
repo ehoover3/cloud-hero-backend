@@ -5,7 +5,7 @@ node_modules/
 dist/
 
 # Ignore environment-specific files
-# .env
+.env
 
 # Ignore Elastic Beanstalk deployment files
 .ebextensions/.config-metadata

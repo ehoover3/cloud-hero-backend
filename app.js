@@ -74,7 +74,19 @@ app.get("/:id", (req, res) => {
   docClient.get(params, (err, data) => {
     if (err) {
       console.error("Error retrieving item:", err);
-      res.status(500).send("Error retrieving item: " + err.message);
+      const errorMessage = `Error retrieving item: ${err.message}`;
+      const errorDetails = {
+        name: err.name,
+        message: err.message,
+        stack: err.stack,
+        code: err.code,
+        statusCode: err.statusCode,
+        retryable: err.retryable,
+        retryDelay: err.retryDelay,
+        time: err.time,
+        // Add any other custom properties from the err object if available
+      };
+      res.status(500).json({ error: errorMessage, details: errorDetails });
     } else {
       if (data.Item) {
         console.log("Item retrieved successfully:", data.Item);
@@ -86,6 +98,7 @@ app.get("/:id", (req, res) => {
     }
   });
 });
+
 
 app.put("/:id", (req, res) => {
   const params = {

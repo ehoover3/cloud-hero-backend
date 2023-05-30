@@ -29,7 +29,11 @@ app.get("/items", (req, res) => {
   dynamodb.scan(params, (err, data) => {
     if (err) {
       console.error(err);
-      res.status(500).json({ error: "Unable to retrieve items" });
+      const errorResponse = {
+        error: "Unable to retrieve items",
+        errorDetails: err,
+      };
+      res.status(500).send(JSON.stringify(errorResponse, null, 2));
     } else {
       res.json(data.Items);
     }

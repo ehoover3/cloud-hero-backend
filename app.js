@@ -18,7 +18,7 @@ if (port === 3000) {
 } else {
   AWS.config.update({ region: process.env.AWS_REGION }); // Update with your desired region
 }
-
+//
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
 app.get("/items", (req, res) => {

@@ -1,7 +1,10 @@
 const express = require("express");
-const AWS = require("aws-sdk");
 const app = express();
+
+const AWS = require("aws-sdk");
+
 require("dotenv").config();
+
 const { v4: uuidv4 } = require("uuid");
 const bodyParser = require("body-parser");
 
@@ -18,7 +21,8 @@ AWS.config.update({
 const docClient = new AWS.DynamoDB.DocumentClient();
 const tableName = process.env.DYNAMODB_TABLE_NAME;
 
-app.use(bodyParser.json());
+app.use(bodyParser.json()); 
+
 
 app.post("/", (req, res) => {
   const itemId = uuidv4();
@@ -70,7 +74,7 @@ app.get("/:id", (req, res) => {
   docClient.get(params, (err, data) => {
     if (err) {
       console.error("Error retrieving item:", err);
-      res.status(500).send("Error retrieving item");
+      res.status(500).send("Error retrieving item: " + err.message);
     } else {
       if (data.Item) {
         console.log("Item retrieved successfully:", data.Item);

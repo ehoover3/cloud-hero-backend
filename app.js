@@ -16,7 +16,7 @@ if (port === 3000) {
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
   });
 } else {
-  AWS.config.update({ region: "us-east-1" }); // Update with your desired region
+  AWS.config.update({ region: process.env.AWS_REGION }); // Update with your desired region
 }
 
 const dynamodb = new AWS.DynamoDB.DocumentClient();

@@ -9,7 +9,7 @@ const app = express();
 const tableName = "cloudhero";
 app.use(express.json());
 
-if ((port = 3000)) {
+if (port == 3000) {
   AWS.config.update({
     region: process.env.AWS_REGION,
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,

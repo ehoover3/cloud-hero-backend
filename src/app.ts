@@ -1,29 +1,29 @@
-const express = require("express");
-const AWS = require("aws-sdk");
-const dotenv = require("dotenv");
-const port = process.env.PORT || 3000;
-//
+import express from "express";
+import AWS from "aws-sdk";
+import dotenv from "dotenv";
+import { Request, Response, NextFunction } from "express";
+
 dotenv.config();
 
 const app = express();
-let tableName = process.env.DYNAMODB_TABLE_NAME || "cloudhero";
+const tableName = process.env.DYNAMODB_TABLE_NAME || "cloudhero";
 app.use(express.json());
 
-if (port === 3000) {
+if (process.env.PORT === "3000") {
   AWS.config.update({
     region: process.env.AWS_REGION,
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
   });
 } else {
-  AWS.config.update({ region: process.env.AWS_REGION }); // Update with your desired region
+  AWS.config.update({ region: process.env.AWS_REGION });
 }
 
 const dynamodb = new AWS.DynamoDB.DocumentClient({
   region: "us-east-1",
 });
 
-app.get("/", (req, res) => {
+app.get("/", (req: Request, res: Response) => {
   const params = {
     TableName: tableName,
   };
@@ -42,7 +42,7 @@ app.get("/", (req, res) => {
   });
 });
 
-app.post("/items", (req, res) => {
+app.post("/items", (req: Request, res: Response) => {
   const { id, name } = req.body;
 
   const params = {
@@ -60,7 +60,7 @@ app.post("/items", (req, res) => {
   });
 });
 
-app.put("/items/:id", (req, res, next) => {
+app.put("/items/:id", (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
   const { name } = req.body;
 
@@ -82,7 +82,7 @@ app.put("/items/:id", (req, res, next) => {
   });
 });
 
-app.delete("/items/:id", (req, res, next) => {
+app.delete("/items/:id", (req: Request, res: Response, next: NextFunction) => {
   const { id } = req.params;
 
   const params = {
@@ -100,6 +100,6 @@ app.delete("/items/:id", (req, res, next) => {
   });
 });
 
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
+app.listen(process.env.PORT || 3000, () => {
+  console.log(`Server running on port ${process.env.PORT || 3000}`);
 });

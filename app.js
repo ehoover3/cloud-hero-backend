@@ -51,7 +51,7 @@ app.post("/items", (req, res) => {
   dynamodb.put(params, (err) => {
     if (err) {
       console.error(err);
-      res.status(500).json({ error: "Unable to create item" });
+      res.status(500).json({ error: err.message || "Unable to create item" });
     } else {
       res.sendStatus(201);
     }
@@ -84,7 +84,7 @@ app.delete("/items/:id", (req, res, next) => {
   const { id } = req.params;
 
   const params = {
-    TableName: "cloudhero",
+    TableName: tableName,
     Key: { id },
   };
 

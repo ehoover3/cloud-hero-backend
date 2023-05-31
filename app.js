@@ -1,31 +1,34 @@
-import express from "express";
-import AWS from "aws-sdk";
-import dotenv from "dotenv";
-import { Request, Response, NextFunction } from "express";
-
+const express = require("express");
+const AWS = require("aws-sdk");
+const dotenv = require("dotenv");
 dotenv.config();
 
 const app = express();
-const tableName = process.env.DYNAMODB_TABLE_NAME || "cloudhero";
+const port = process.env.PORT || 3000;
+const region = process.env.region;
+let table = process.env.DYNAMODB_TABLE_NAME;
+const accessKey = process.env.AWS_ACCESS_KEY_ID;
+const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
+
 app.use(express.json());
 
-if (process.env.PORT === "3000") {
+if (port === 3000) {
   AWS.config.update({
-    region: process.env.AWS_REGION,
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    region: region,
+    accessKeyId: accessKey,
+    secretAccessKey: secretAccessKey,
   });
 } else {
-  AWS.config.update({ region: process.env.AWS_REGION });
+  AWS.config.update({ region: region });
 }
 
 const dynamodb = new AWS.DynamoDB.DocumentClient({
   region: "us-east-1",
 });
 
-app.get("/", (req: Request, res: Response) => {
+app.get("/", (req, res) => {
   const params = {
-    TableName: tableName,
+    TableName: table,
   };
 
   dynamodb.scan(params, (err, data) => {
@@ -42,11 +45,11 @@ app.get("/", (req: Request, res: Response) => {
   });
 });
 
-app.post("/items", (req: Request, res: Response) => {
+app.post("/items", (req, res) => {
   const { id, name } = req.body;
 
   const params = {
-    TableName: tableName,
+    TableName: table,
     Item: { id, name },
   };
 
@@ -60,12 +63,12 @@ app.post("/items", (req: Request, res: Response) => {
   });
 });
 
-app.put("/items/:id", (req: Request, res: Response, next: NextFunction) => {
+app.put("/items/:id", (req, res, next) => {
   const { id } = req.params;
   const { name } = req.body;
 
   const params = {
-    TableName: tableName,
+    TableName: table,
     Key: { id },
     UpdateExpression: "set #name = :nameValue",
     ExpressionAttributeNames: { "#name": "name" },
@@ -82,11 +85,11 @@ app.put("/items/:id", (req: Request, res: Response, next: NextFunction) => {
   });
 });
 
-app.delete("/items/:id", (req: Request, res: Response, next: NextFunction) => {
+app.delete("/items/:id", (req, res, next) => {
   const { id } = req.params;
 
   const params = {
-    TableName: tableName,
+    TableName: table,
     Key: { id },
   };
 
@@ -100,6 +103,6 @@ app.delete("/items/:id", (req: Request, res: Response, next: NextFunction) => {
   });
 });
 
-app.listen(process.env.PORT || 3000, () => {
-  console.log(`Server running on port ${process.env.PORT || 3000}`);
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
 });

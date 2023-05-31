@@ -6,7 +6,7 @@ const port = process.env.PORT || 3000;
 dotenv.config();
 
 const app = express();
-const tableName = process.env.DYNAMODB_TABLE_NAME || "cloudhero";
+let tableName = process.env.DYNAMODB_TABLE_NAME || "cloudhero";
 app.use(express.json());
 
 if (port === 3000) {

@@ -6,7 +6,7 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 3000;
 const region = process.env.region || "us-east-1";
-let table = process.env.DYNAMODB_TABLE_NAME || "cloudhero";
+const table = process.env.DYNAMODB_TABLE_NAME || "cloudhero";
 const accessKey = process.env.AWS_ACCESS_KEY_ID;
 const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
 

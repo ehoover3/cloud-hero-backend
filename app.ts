@@ -1,6 +1,6 @@
-const express = require("express");
-const AWS = require("aws-sdk");
-const dotenv = require("dotenv");
+import express from "express";
+import AWS from "aws-sdk";
+import dotenv from "dotenv";
 dotenv.config();
 
 const app = express();

@@ -21,7 +21,7 @@ if (port === 3000) {
 
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
-app.get("/items", (req, res) => {
+app.get("/", (req, res) => {
   const params = {
     TableName: tableName,
   };

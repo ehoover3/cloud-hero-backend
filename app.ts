@@ -5,7 +5,7 @@ dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 3000;
-const region = process.env.region || "us-east-1";
+const region = process.env.AWS_REGION || "us-east-1";
 const table = process.env.DYNAMODB_TABLE_NAME || "cloudhero";
 const accessKey = process.env.AWS_ACCESS_KEY_ID;
 const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
@@ -23,7 +23,7 @@ if (port === 3000) {
 }
 
 const dynamodb = new AWS.DynamoDB.DocumentClient({
-  region: "us-east-1",
+  region: region,
 });
 
 app.get("/", (req, res) => {
